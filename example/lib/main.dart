@@ -56,58 +56,60 @@ class _MyAppState extends State<MyApp> {
           appBar: AppBar(
             title: const Text('Smart reply example'),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _messages.length,
-                    reverse: true,
-                    itemBuilder: (context, i) => Align(
-                      alignment: _messages[_messages.length - 1 - i].isLocalUser
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: _messages[_messages.length - 1 - i]
-                                      .isLocalUser
-                                  ? Colors.grey
-                                  : Colors.blue),
-                          child: Text(
-                            _messages[_messages.length - 1 - i].text,
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          )),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _messages.length,
+                      reverse: true,
+                      itemBuilder: (context, i) => Align(
+                        alignment: _messages[_messages.length - 1 - i].isLocalUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: _messages[_messages.length - 1 - i]
+                                        .isLocalUser
+                                    ? Colors.grey
+                                    : Colors.blue),
+                            child: Text(
+                              _messages[_messages.length - 1 - i].text,
+                              style: TextStyle(fontSize: 14, color: Colors.white),
+                            )),
+                      ),
                     ),
                   ),
-                ),
-                TextField(
-                  controller: _textController,
-                  onSubmitted: _sendMessage,
-                  textInputAction: TextInputAction.send,
-                  decoration: InputDecoration(
-                      labelText: _isLocalUser ? 'To remote' : 'To local'),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 24),
-                  child: Wrap(
-                    runAlignment: WrapAlignment.center,
-                    alignment: WrapAlignment.spaceEvenly,
-                    children: [
-                      for (var s in _suggestedReplies)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: OutlineButton(
-                            child: Text(s),
-                            onPressed: () => _sendMessage(s),
-                          ),
-                        )
-                    ],
+                  TextField(
+                    controller: _textController,
+                    onSubmitted: _sendMessage,
+                    textInputAction: TextInputAction.send,
+                    decoration: InputDecoration(
+                        labelText: _isLocalUser ? 'To remote' : 'To local'),
                   ),
-                )
-              ],
+                  Container(
+                    margin: EdgeInsets.only(top: 24),
+                    child: Wrap(
+                      runAlignment: WrapAlignment.center,
+                      alignment: WrapAlignment.spaceEvenly,
+                      children: [
+                        for (var s in _suggestedReplies)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: OutlineButton(
+                              child: Text(s),
+                              onPressed: () => _sendMessage(s),
+                            ),
+                          )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
