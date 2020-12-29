@@ -41,6 +41,24 @@ android {
 ```
 Otherwise `getSuggestions` will throw a `PlatformException`
 
+### iOS Setup
+Requirements:
+- Xcode 11.7 or greater.
+- 64-bit architectures (x86_64 and arm64).
+You must [limit your app](https://stackoverflow.com/a/33646645/14761140) to __64-bit devices only__.
+> In Xcode, set the following values:
+>
+> Build settings > Architectures:
+> - Set to arm64 only. (click Other -> + and than enter arm64)
+>
+> Build settings > Valid architectures:
+> - Set to arm64 only.
+>
+> Info.plist:
+> - Set UIRequiredDeviceCapabilities to arm64 only.
+
+You also have to set the iOS Deployment Target to at least 8.0.
+
 ## Key capabilities
 - The Smart Reply model generates reply suggestions based on the full context of a conversation, not just a single message. This means the suggestions are more helpful to your users.
 - The on-device model generates replies quickly and doesn't require you to send users' messages to a remote server.
