@@ -1,12 +1,12 @@
 name: smart_reply
-description: Generate relevant replies to messages using MLKit.
-version: 0.0.1
+description: Generate relevant replies to messages using MLKit's Smart Reply API.
+version: 0.1.0
 homepage: https://github.com/kirpal/smart_reply
 repository: https://github.com/kirpal/smart_reply
 issue_tracker: https://github.com/kirpal/smart_reply/issues
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.20.0 <2.0.0"
 
 dependencies:

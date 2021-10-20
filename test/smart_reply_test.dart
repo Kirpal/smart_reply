@@ -7,35 +7,60 @@ void main() {
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
-  });
-
-  test('suggestReplies', () async {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'suggestReplies') {
-        return ['Suggestion 1', 'Suggestion 2', 'Suggestion 3'];
-      }
+  group('SmartReply', () {
+    group('constructor', () {
+      test('returns normally', () {
+        expect(SmartReply(), isNotNull);
+      });
     });
 
-    expect(await SmartReply.suggestReplies([]), []);
-    expect(
-        await SmartReply.suggestReplies([
-          TextMessage(
+    group('suggestReplies', () {
+      setUp(() {
+        channel.setMockMethodCallHandler((MethodCall methodCall) async {
+          if (methodCall.method == 'suggestReplies') {
+            return ['Suggestion 1', 'Suggestion 2', 'Suggestion 3'];
+          }
+        });
+      });
+
+      tearDown(() {
+        channel.setMockMethodCallHandler(null);
+      });
+
+      test('returns an empty list when given no context', () async {
+        expect(await SmartReply().suggestReplies([]), []);
+      });
+
+      test(
+          'returns an empty list when the last message was from the local user',
+          () async {
+        expect(
+          await SmartReply().suggestReplies([
+            TextMessage(
               text: 'text',
               timestamp: DateTime.now(),
               userId: 'a',
-              isLocalUser: true)
-        ]),
-        []);
-    expect(
-        await SmartReply.suggestReplies([
-          TextMessage(
+              isLocalUser: true,
+            ),
+          ]),
+          [],
+        );
+      });
+
+      test('returns suggestions when the last message was from the remote user',
+          () async {
+        expect(
+          await SmartReply().suggestReplies([
+            TextMessage(
               text: 'text',
               timestamp: DateTime.now(),
               userId: 'a',
-              isLocalUser: false)
-        ]),
-        ['Suggestion 1', 'Suggestion 2', 'Suggestion 3']);
+              isLocalUser: false,
+            ),
+          ]),
+          ['Suggestion 1', 'Suggestion 2', 'Suggestion 3'],
+        );
+      });
+    });
   });
 }

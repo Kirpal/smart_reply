@@ -1,3 +1,6 @@
-## 0.0.1
+## 0.1.0
+* Migrate to sound null safety
+* Improve testability by moving away from a static method
 
-* TODO: Describe initial release.
+## 0.0.1
+* Initial release.

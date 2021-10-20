@@ -20,7 +20,12 @@ class TextMessage {
   /// Was this message sent by the local user?
   final bool isLocalUser;
 
-  TextMessage({this.text, this.timestamp, this.userId, this.isLocalUser});
+  TextMessage({
+    required this.text,
+    required this.timestamp,
+    required this.userId,
+    required this.isLocalUser,
+  });
 
   Map<String, dynamic> _toJson() => {
         'text': text,
@@ -40,6 +45,9 @@ class TextMessage {
 /// The on-device model generates replies quickly and doesn't require you to
 /// send users' messages to a remote server.
 class SmartReply {
+  /// Create a new [SmartReply]
+  const SmartReply();
+
   static const MethodChannel _channel = const MethodChannel('smart_reply');
 
   /// Gets the suggested meaningful replies to a text message
@@ -51,12 +59,16 @@ class SmartReply {
   /// users participating in the conversation in ascending chronological order
   /// (i.e. from oldest to newest). Internally, SmartReply considers the last 10
   /// messages to generate reply suggestions.
-  static Future<List<String>> suggestReplies(List<TextMessage> textMessages) {
+  Future<List<String>> suggestReplies(List<TextMessage> textMessages) async {
     if (textMessages.isEmpty || textMessages.last.isLocalUser) {
       return Future.value([]);
     }
 
-    return _channel.invokeListMethod<String>(
-        'suggestReplies', textMessages.map((m) => m._toJson()).toList());
+    final replies = await _channel.invokeListMethod<String>(
+      'suggestReplies',
+      textMessages.map((m) => m._toJson()).toList(),
+    );
+
+    return replies ?? [];
   }
 }

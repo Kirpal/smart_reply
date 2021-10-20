@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_reply/smart_reply.dart';
 
@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _textController = TextEditingController();
+  final _smartReply = SmartReply();
   List<String> _suggestedReplies = [];
   List<TextMessage> _messages = [];
   bool _isLocalUser = true;
@@ -26,7 +27,7 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> getSuggestedReplies() async {
-    SmartReply.suggestReplies(_messages).then((replies) {
+    _smartReply.suggestReplies(_messages).then((replies) {
       setState(() {
         _suggestedReplies = replies;
       });
@@ -36,10 +37,11 @@ class _MyAppState extends State<MyApp> {
   void _sendMessage(String message) {
     setState(() {
       _messages.add(TextMessage(
-          text: message,
-          timestamp: DateTime.now(),
-          userId: _isLocalUser ? 'a' : 'b',
-          isLocalUser: _isLocalUser));
+        text: message,
+        timestamp: DateTime.now(),
+        userId: _isLocalUser ? 'a' : 'b',
+        isLocalUser: _isLocalUser,
+      ));
       _isLocalUser = !_isLocalUser;
       _textController.clear();
     });
@@ -65,23 +67,28 @@ class _MyAppState extends State<MyApp> {
                     child: ListView.builder(
                       itemCount: _messages.length,
                       reverse: true,
-                      itemBuilder: (context, i) => Align(
-                        alignment: _messages[_messages.length - 1 - i].isLocalUser
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Container(
+                      itemBuilder: (context, i) {
+                        final message = _messages[_messages.length - 1 - i];
+                        return Align(
+                          alignment: message.isLocalUser
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: _messages[_messages.length - 1 - i]
-                                        .isLocalUser
-                                    ? Colors.grey
-                                    : Colors.blue),
+                              borderRadius: BorderRadius.circular(10),
+                              color: message.isLocalUser
+                                  ? Colors.grey
+                                  : Colors.blue,
+                            ),
                             child: Text(
-                              _messages[_messages.length - 1 - i].text,
-                              style: TextStyle(fontSize: 14, color: Colors.white),
-                            )),
-                      ),
+                              message.text,
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   TextField(
@@ -89,7 +96,8 @@ class _MyAppState extends State<MyApp> {
                     onSubmitted: _sendMessage,
                     textInputAction: TextInputAction.send,
                     decoration: InputDecoration(
-                        labelText: _isLocalUser ? 'To remote' : 'To local'),
+                      labelText: _isLocalUser ? 'To remote' : 'To local',
+                    ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 24),
@@ -100,11 +108,11 @@ class _MyAppState extends State<MyApp> {
                         for (var s in _suggestedReplies)
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               child: Text(s),
                               onPressed: () => _sendMessage(s),
                             ),
-                          )
+                          ),
                       ],
                     ),
                   )
