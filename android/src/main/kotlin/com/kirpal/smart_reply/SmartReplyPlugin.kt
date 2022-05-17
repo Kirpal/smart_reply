@@ -46,7 +46,7 @@ class SmartReplyPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "suggestReplies") {
-      val conversation = call.arguments<List<Map<String, Any>>>().map { m ->
+      val conversation = call.arguments<List<Map<String, Any>>?>().map { m ->
         if(m["isLocalUser"] as Boolean) {
           return@map TextMessage.createForLocalUser(m["text"] as String, m["timestamp"] as Long)
         } else {
