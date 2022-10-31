@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'smart_reply'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = 'Generate relevant replies to messages using MLKit.'
   s.description      = <<-DESC
 Generate relevant replies to messages using MLKit.
