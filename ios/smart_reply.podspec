@@ -15,7 +15,7 @@ Generate relevant replies to messages using MLKit.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'GoogleMLKit/SmartReply'
+  s.dependency 'GoogleMLKit/SmartReply', '~> 3.2.0'
   s.static_framework = true
   s.ios.deployment_target  = '12.0'
 
