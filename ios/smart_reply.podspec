@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'smart_reply'
-  s.version          = '0.0.1'
+  s.version          = '1.0.0'
   s.summary          = 'Generate relevant replies to messages using MLKit.'
   s.description      = <<-DESC
 Generate relevant replies to messages using MLKit.
@@ -15,9 +15,9 @@ Generate relevant replies to messages using MLKit.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'GoogleMLKit/SmartReply'
+  s.dependency 'GoogleMLKit/SmartReply', '~> 3.2.0'
   s.static_framework = true
-  s.ios.deployment_target  = '10.0'
+  s.ios.deployment_target  = '12.0'
 
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
